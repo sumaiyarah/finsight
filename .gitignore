@@ -8,3 +8,6 @@ __pycache__/
 
 # Downloaded filings (large, can be re-downloaded)
 data/raw/
+
+# Generated outputs (rebuild with the scripts)
+data/processed/
