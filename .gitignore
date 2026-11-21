@@ -10,4 +10,4 @@ __pycache__/
 data/raw/
 
 # Generated outputs (rebuild with the scripts)
-data/processed/
+data/processed/data/processed/
