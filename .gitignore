@@ -11,3 +11,8 @@ data/raw/
 
 # Generated outputs (rebuild with the scripts)
 data/processed/data/processed/
+
+
+.env
+data/
+.vscode/
