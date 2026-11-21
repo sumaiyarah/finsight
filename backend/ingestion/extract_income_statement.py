@@ -51,6 +51,25 @@ def numbers_for(df, label):
     
     return numbers_in(matches[0]) if matches else []
 
+OUT_FILE = Path(__file__).resolve().parents[2] / "data" / "processed" / "AAPL_FY2026" / "income_statement.csv"
+
+def save_income_statement(sales, cost, margin):
+    OUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    rows = [
+        {
+            "company": "Apple",
+            "ticker": "AAPL",
+            "fiscal_year": year,
+            "units": "USD millions",
+            "total_net_sales": s,
+            "total_cost_of_sales": c,
+            "gross_margin": m,
+            "check_sales_equals_cost_plus_margin": s == c + m,
+        }
+        for year, s, c, m in zip(YEARS, sales, cost, margin)
+    ]
+    pd.DataFrame(rows).to_csv(OUT_FILE, index=False)
+    print(f"saved {len(rows)} rows -> {OUT_FILE}")
 def main() -> None:
     tables = pd.read_html(FILING)
     df = find_income_table(tables)
@@ -59,11 +78,10 @@ def main() -> None:
     cost = numbers_for(df, "Total cost of sales")
     margin = numbers_for(df, "Gross margin")
 
-    print()
     for year, s, c, m in zip(YEARS, sales, cost, margin):
         print(f"{year}: net sales {s:,} | cost of sales {c:,} | gross margin {m:,} | "
               f"check (sales = cost + margin): {s == c + m}")
-
+    save_income_statement(sales, cost, margin)
 
 if __name__ == "__main__":
     main()
